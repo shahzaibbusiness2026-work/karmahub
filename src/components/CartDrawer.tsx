@@ -15,16 +15,16 @@ export default function CartDrawer() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        closeCart();
-      }
+      if (e.key === "Escape") closeCart();
     };
     if (isCartOpen) {
       document.body.style.overflow = "hidden";
       window.addEventListener("keydown", handleKeyDown);
     }
     return () => {
-      document.body.style.overflow = "auto";
+      // Reset to default — using "" removes the inline style entirely
+      // rather than forcing "auto" which overrides parent styles
+      document.body.style.overflow = "";
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isCartOpen, closeCart]);

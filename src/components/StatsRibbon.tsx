@@ -3,57 +3,40 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import ScheduleOutlinedIcon from "@mui/icons-material/ScheduleOutlined";
+import type { SvgIconComponent } from "@mui/icons-material";
+
+interface Stat {
+  Icon: SvgIconComponent;
+  value: string;
+  label: string;
+}
+
+const STATS: Stat[] = [
+  { Icon: ShoppingCartOutlinedIcon, value: "10,000+", label: "Accounts Listed" },
+  { Icon: GroupsOutlinedIcon,        value: "2,500+",  label: "Happy Customers" },
+  { Icon: VerifiedUserOutlinedIcon,  value: "98%",     label: "Successful Transfers" },
+  { Icon: ScheduleOutlinedIcon,      value: "24/7",    label: "Customer Support" },
+];
 
 export default function StatsRibbon() {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-xs">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-gray-100">
-        
-        {/* Stat 1 */}
-        <div className="flex items-center gap-4 pt-2 md:pt-0">
-          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
-            <ShoppingCartOutlinedIcon className="!text-[28px]" />
+      <dl className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y-0 md:divide-x divide-gray-100">
+        {STATS.map(({ Icon, value, label }, index) => (
+          <div
+            key={label}
+            className={`flex items-center gap-4 ${index > 0 && index < 2 ? "pt-6 md:pt-0" : ""} ${index >= 2 ? "pt-6 md:pt-0" : ""} md:pl-6 first:pl-0`}
+          >
+            <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
+              <Icon className="!text-[28px]" aria-hidden="true" />
+            </div>
+            <div>
+              <dd className="text-xl sm:text-2xl font-black text-gray-900">{value}</dd>
+              <dt className="text-xs text-gray-500 font-medium">{label}</dt>
+            </div>
           </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-black text-gray-900">10,000+</div>
-            <div className="text-xs text-gray-500 font-medium">Accounts Listed</div>
-          </div>
-        </div>
-
-        {/* Stat 2 */}
-        <div className="flex items-center gap-4 pt-4 md:pt-0 md:pl-6">
-          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
-            <GroupsOutlinedIcon className="!text-[28px]" />
-          </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-black text-gray-900">2,500+</div>
-            <div className="text-xs text-gray-500 font-medium">Happy Customers</div>
-          </div>
-        </div>
-
-        {/* Stat 3 */}
-        <div className="flex items-center gap-4 pt-4 md:pt-0 md:pl-6">
-          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
-            <VerifiedUserOutlinedIcon className="!text-[28px]" />
-          </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-black text-gray-900">98%</div>
-            <div className="text-xs text-gray-500 font-medium">Successful Transfers</div>
-          </div>
-        </div>
-
-        {/* Stat 4 */}
-        <div className="flex items-center gap-4 pt-4 md:pt-0 md:pl-6">
-          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
-            <ScheduleOutlinedIcon className="!text-[28px]" />
-          </div>
-          <div>
-            <div className="text-xl sm:text-2xl font-black text-gray-900">24/7</div>
-            <div className="text-xs text-gray-500 font-medium">Customer Support</div>
-          </div>
-        </div>
-
-      </div>
+        ))}
+      </dl>
     </div>
   );
 }

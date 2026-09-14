@@ -337,11 +337,38 @@ function ListingDetailContent() {
   );
 }
 
+function ListingPageSkeleton() {
+  return (
+    <main className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
+      <div className="animate-pulse space-y-6">
+        {/* Breadcrumb skeleton */}
+        <div className="h-4 bg-gray-100 rounded-full w-64" />
+        {/* Title card skeleton */}
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 h-28" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-8 space-y-4">
+            <div className="grid grid-cols-4 gap-4">
+              {[1, 2, 3, 4].map((n) => (
+                <div key={n} className="bg-gray-100 rounded-xl h-24" />
+              ))}
+            </div>
+            <div className="bg-gray-100 rounded-2xl h-48" />
+            <div className="bg-gray-100 rounded-2xl h-56" />
+          </div>
+          <div className="lg:col-span-4">
+            <div className="bg-gray-100 rounded-2xl h-80" />
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+
 export default function ListingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FBFBFD]">
       <Navbar />
-      <Suspense fallback={<div className="p-12 text-center text-gray-500">Loading account details...</div>}>
+      <Suspense fallback={<ListingPageSkeleton />}>
         <ListingDetailContent />
       </Suspense>
       <Footer />

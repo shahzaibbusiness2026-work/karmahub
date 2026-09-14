@@ -2,16 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* -----------------------------------------------------------------------
+   Base reset — font-family is set here; the Tailwind `antialiased` class
+   handles -webkit-font-smoothing on the body element, so we don't repeat it.
+   ----------------------------------------------------------------------- */
 @layer base {
-  html, body {
+  html {
+    /* Smooth scrolling for anchor navigation */
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
     margin: 0;
     padding: 0;
-    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, sans-serif;
+  }
+
+  /* Respect user motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
+/* -----------------------------------------------------------------------
+   Custom scrollbar — Webkit only; other browsers use the system default.
+   ----------------------------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -25,4 +50,80 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* -----------------------------------------------------------------------
+   Tailwind animate-in utilities
+   These classes are used by CartDrawer, Navbar mobile menu, ProfileDropdown
+   and ProofModal for entry animations.
+   ----------------------------------------------------------------------- */
+@layer utilities {
+  /* Fade in */
+  .animate-in {
+    animation-fill-mode: both;
+  }
+  .fade-in {
+    animation-name: fadeIn;
+    animation-duration: 150ms;
+    animation-timing-function: ease-out;
+  }
+
+  /* Zoom in */
+  .zoom-in-95 {
+    animation-name: zoomIn95;
+    animation-duration: 150ms;
+    animation-timing-function: ease-out;
+  }
+
+  /* Slide in from top */
+  .slide-in-from-top-2 {
+    animation-name: slideInFromTop2;
+    animation-duration: 150ms;
+    animation-timing-function: ease-out;
+  }
+
+  /* Slide in from right */
+  .slide-in-from-right {
+    animation-name: slideInFromRight;
+    animation-timing-function: ease-out;
+  }
+
+  /* Slide in from bottom */
+  .slide-in-from-bottom-4 {
+    animation-name: slideInFromBottom4;
+    animation-duration: 300ms;
+    animation-timing-function: ease-out;
+  }
+
+  /* Duration utilities */
+  .duration-100 { animation-duration: 100ms; }
+  .duration-150 { animation-duration: 150ms; }
+  .duration-200 { animation-duration: 200ms; }
+  .duration-250 { animation-duration: 250ms; }
+  .duration-300 { animation-duration: 300ms; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes zoomIn95 {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInFromTop2 {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFromRight {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInFromBottom4 {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
