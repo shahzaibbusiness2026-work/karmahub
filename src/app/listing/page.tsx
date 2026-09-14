@@ -249,7 +249,7 @@ function ListingDetailContent() {
 
         {/* Right Column: Escrow Purchase Box (4 cols) */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg space-y-5 sticky top-24">
+          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 shadow-lg space-y-4 sm:space-y-5 lg:sticky lg:top-24">
             
             <div className="border-b border-gray-100 pb-4">
               <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block">

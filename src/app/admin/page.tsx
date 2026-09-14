@@ -350,9 +350,9 @@ export default function AdminDashboardPage() {
       </header>
 
       {/* Main Content Area */}
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8 flex-1">
-        {/* KPI Metric Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8 w-full space-y-5 sm:space-y-8 flex-1">
+          {/* KPI Metric Cards — 1 col on xs, 2 on sm, 4 on lg */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
           <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-xs flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
               <AttachMoneyIcon className="!text-[28px]" />
@@ -409,50 +409,27 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         </div>
-
-        {/* Tab Navigation */}
-        <div className="border-b border-gray-200">
-          <nav className="flex space-x-6 text-sm font-bold">
-            <button
-              onClick={() => setActiveTab("listings")}
-              className={`pb-3 border-b-2 transition-colors cursor-pointer flex items-center gap-2 ${
-                activeTab === "listings"
-                  ? "border-[#FF4500] text-[#FF4500]"
-                  : "border-transparent text-gray-500 hover:text-gray-900"
-              }`}
-            >
-              <span>Listings & Inventory ({accounts.length})</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("orders")}
-              className={`pb-3 border-b-2 transition-colors cursor-pointer flex items-center gap-2 ${
-                activeTab === "orders"
-                  ? "border-[#FF4500] text-[#FF4500]"
-                  : "border-transparent text-gray-500 hover:text-gray-900"
-              }`}
-            >
-              <span>Escrow Orders ({orders.length})</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("logs")}
-              className={`pb-3 border-b-2 transition-colors cursor-pointer flex items-center gap-2 ${
-                activeTab === "logs"
-                  ? "border-[#FF4500] text-[#FF4500]"
-                  : "border-transparent text-gray-500 hover:text-gray-900"
-              }`}
-            >
-              <span>Audit Logs ({logs.length})</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("settings")}
-              className={`pb-3 border-b-2 transition-colors cursor-pointer flex items-center gap-2 ${
-                activeTab === "settings"
-                  ? "border-[#FF4500] text-[#FF4500]"
-                  : "border-transparent text-gray-500 hover:text-gray-900"
-              }`}
-            >
-              <span>Platform Settings</span>
-            </button>
+              {/* Tab Navigation — horizontally scrollable on mobile */}
+        <div className="border-b border-gray-200 overflow-x-auto">
+          <nav className="flex gap-1 sm:gap-2 text-sm font-bold min-w-max pb-px" aria-label="Admin sections">
+            {([
+              { id: "listings", label: `Listings (${accounts.length})` },
+              { id: "orders", label: `Orders (${orders.length})` },
+              { id: "logs", label: `Logs (${logs.length})` },
+              { id: "settings", label: "Settings" },
+            ] as const).map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id)}
+                className={`pb-3 px-1 border-b-2 transition-colors cursor-pointer whitespace-nowrap ${
+                  activeTab === id
+                    ? "border-[#FF4500] text-[#FF4500]"
+                    : "border-transparent text-gray-500 hover:text-gray-900"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </nav>
         </div>
 
@@ -740,7 +717,7 @@ export default function AdminDashboardPage() {
               {logs.map((log) => (
                 <div
                   key={log.id}
-                  className="p-3 bg-gray-50/80 rounded-xl border border-gray-200/60 flex items-center justify-between gap-4"
+                  className="p-3 bg-gray-50/80 rounded-xl border border-gray-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4"
                 >
                   <div className="flex items-center gap-3">
                     <span className="w-2 h-2 rounded-full bg-[#FF4500]"></span>

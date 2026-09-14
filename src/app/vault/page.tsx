@@ -110,7 +110,7 @@ function VaultContent() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 pb-20 pt-8">
+    <div className="min-h-screen bg-neutral-50 pb-16 sm:pb-20 pt-6 sm:pt-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between mb-8">
@@ -127,32 +127,32 @@ function VaultContent() {
         </div>
 
         {/* Vault Banner */}
-        <div className="bg-gradient-to-r from-neutral-900 to-neutral-800 text-white rounded-3xl p-6 sm:p-8 shadow-xl mb-8 relative overflow-hidden">
-          <div className="absolute right-0 top-0 translate-x-10 -translate-y-10 w-64 h-64 bg-[#FF4500]/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="bg-gradient-to-r from-neutral-900 to-neutral-800 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-xl mb-6 sm:mb-8 relative overflow-hidden">
+          <div className="absolute right-0 top-0 translate-x-10 -translate-y-10 w-64 h-64 bg-[#FF4500]/20 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative z-10">
+          <div className="flex flex-col gap-5 relative z-10">
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <ShieldIcon className="text-[#FF4500]" />
+                <ShieldIcon className="text-[#FF4500]" aria-hidden="true" />
                 <span className="text-xs font-bold tracking-wider uppercase text-neutral-400">
                   Secure Delivery Vault
                 </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold">{account.title}</h1>
-              <p className="text-neutral-400 text-sm mt-1">
-                Order Reference: <span className="font-mono text-white font-semibold">{orderId}</span> • Asset ID:{' '}
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold leading-tight">{account.title}</h1>
+              <p className="text-neutral-400 text-xs sm:text-sm mt-1 leading-relaxed">
+                Order: <span className="font-mono text-white font-semibold">{orderId}</span> &bull; Asset:{' '}
                 <span className="font-mono text-[#FF4500]">{account.id}</span>
               </p>
             </div>
 
             {/* Countdown Badge */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#FF4500]/20 flex items-center justify-center text-[#FF4500]">
-                <TimerIcon />
+            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-3 sm:p-4 flex items-center gap-3 self-start">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#FF4500]/20 flex items-center justify-center text-[#FF4500] shrink-0">
+                <TimerIcon aria-hidden="true" />
               </div>
               <div>
-                <p className="text-xs text-neutral-300 font-medium">Escrow Inspection Window</p>
-                <p className="text-lg font-mono font-bold text-white">
+                <p className="text-xs text-neutral-300 font-medium">Inspection Window</p>
+                <p className="text-base sm:text-lg font-mono font-bold text-white">
                   {String(timeLeft.hours).padStart(2, '0')}:
                   {String(timeLeft.minutes).padStart(2, '0')}:
                   {String(timeLeft.seconds).padStart(2, '0')}
@@ -178,19 +178,19 @@ function VaultContent() {
 
           <div className="space-y-4">
             {/* Username */}
-            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex items-center justify-between">
-              <div>
+            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="min-w-0">
                 <span className="text-xs font-semibold uppercase text-neutral-500 block mb-1">
                   Reddit Username
                 </span>
-                <span className="font-mono font-bold text-neutral-900 text-base sm:text-lg">
+                <span className="font-mono font-bold text-neutral-900 text-base sm:text-lg break-all">
                   {credentials.username}
                 </span>
               </div>
               <button
                 onClick={() => handleCopy(credentials.username, 'Username')}
                 aria-label="Copy Reddit Username"
-                className="px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-white hover:bg-neutral-100 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                className="min-h-[44px] self-start sm:self-auto px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-white hover:bg-neutral-100 transition flex items-center gap-1.5 shadow-sm cursor-pointer shrink-0"
               >
                 {copiedField === 'Username' ? (
                   <>
@@ -205,8 +205,8 @@ function VaultContent() {
             </div>
 
             {/* Reddit Password */}
-            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex items-center justify-between">
-              <div>
+            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="min-w-0">
                 <span className="text-xs font-semibold uppercase text-neutral-500 block mb-1">
                   Reddit Master Password
                 </span>
@@ -214,11 +214,11 @@ function VaultContent() {
                   {showRedditPass ? credentials.redditPassword : '••••••••••••••••'}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
                 <button
                   onClick={() => setShowRedditPass(!showRedditPass)}
                   aria-label={showRedditPass ? 'Hide password' : 'Show password'}
-                  className="p-2 text-neutral-500 hover:text-neutral-800 transition rounded-xl border border-neutral-200 bg-white shadow-sm cursor-pointer"
+                  className="min-h-[44px] min-w-[44px] p-2 text-neutral-500 hover:text-neutral-800 transition rounded-xl border border-neutral-200 bg-white shadow-sm cursor-pointer flex items-center justify-center"
                   title={showRedditPass ? 'Hide password' : 'Show password'}
                 >
                   {showRedditPass ? <VisibilityOffIcon className="text-base" /> : <VisibilityIcon className="text-base" />}
@@ -226,7 +226,7 @@ function VaultContent() {
                 <button
                   onClick={() => handleCopy(credentials.redditPassword, 'Reddit Password')}
                   aria-label="Copy Reddit Password"
-                  className="px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-white hover:bg-neutral-100 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="min-h-[44px] px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-white hover:bg-neutral-100 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                 >
                   {copiedField === 'Reddit Password' ? (
                     <>
@@ -242,19 +242,19 @@ function VaultContent() {
             </div>
 
             {/* Sterile Gmail */}
-            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex items-center justify-between">
-              <div>
+            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="min-w-0 flex-1">
                 <span className="text-xs font-semibold uppercase text-neutral-500 block mb-1">
                   Original Sterile Email (Full Ownership)
                 </span>
-                <span className="font-mono font-bold text-neutral-900 text-sm sm:text-base">
+                <span className="font-mono font-bold text-neutral-900 text-xs sm:text-sm break-all">
                   {credentials.email}
                 </span>
               </div>
               <button
                 onClick={() => handleCopy(credentials.email, 'Email Address')}
                 aria-label="Copy Email Address"
-                className="px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-white hover:bg-neutral-100 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                className="min-h-[44px] self-start sm:self-auto px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-white hover:bg-neutral-100 transition flex items-center gap-1.5 shadow-sm cursor-pointer shrink-0"
               >
                 {copiedField === 'Email Address' ? (
                   <>
@@ -269,8 +269,8 @@ function VaultContent() {
             </div>
 
             {/* Sterile Email Password */}
-            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex items-center justify-between">
-              <div>
+            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="min-w-0">
                 <span className="text-xs font-semibold uppercase text-neutral-500 block mb-1">
                   Email Account Password
                 </span>
@@ -278,11 +278,11 @@ function VaultContent() {
                   {showEmailPass ? credentials.emailPassword : '••••••••••••••••'}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 self-start sm:self-auto shrink-0">
                 <button
                   onClick={() => setShowEmailPass(!showEmailPass)}
                   aria-label={showEmailPass ? 'Hide email password' : 'Show email password'}
-                  className="p-2 text-neutral-500 hover:text-neutral-800 transition rounded-xl border border-neutral-200 bg-white shadow-sm cursor-pointer"
+                  className="min-h-[44px] min-w-[44px] p-2 text-neutral-500 hover:text-neutral-800 transition rounded-xl border border-neutral-200 bg-white shadow-sm cursor-pointer flex items-center justify-center"
                   title={showEmailPass ? 'Hide password' : 'Show password'}
                 >
                   {showEmailPass ? <VisibilityOffIcon className="text-base" /> : <VisibilityIcon className="text-base" />}
@@ -290,7 +290,7 @@ function VaultContent() {
                 <button
                   onClick={() => handleCopy(credentials.emailPassword, 'Email Password')}
                   aria-label="Copy Email Password"
-                  className="px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-white hover:bg-neutral-100 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
+                  className="min-h-[44px] px-3 py-2 text-xs font-bold rounded-xl border border-neutral-200 bg-white hover:bg-neutral-100 transition flex items-center gap-1.5 shadow-sm cursor-pointer"
                 >
                   {copiedField === 'Email Password' ? (
                     <>

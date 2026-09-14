@@ -67,11 +67,11 @@ export default function Hero({ onSearch, onTagSelect, activeTag }: HeroProps) {
 
             {/* Search Bar — live onChange + submit */}
             <form onSubmit={handleSearchSubmit} className="pt-2" role="search">
-              <div className="bg-white rounded-full p-1.5 pl-5 shadow-md border border-gray-200/90 flex items-center gap-3 max-w-xl">
+              <div className="bg-white rounded-full p-1 sm:p-1.5 pl-3.5 sm:pl-5 shadow-md border border-gray-200/90 flex items-center gap-2 sm:gap-3 max-w-xl">
                 <label htmlFor="hero-search" className="sr-only">
                   Search Reddit accounts
                 </label>
-                <SearchIcon className="text-gray-400 !text-[24px]" aria-hidden="true" />
+                <SearchIcon className="text-gray-400 !text-[20px] sm:!text-[24px] shrink-0" aria-hidden="true" />
                 <input
                   id="hero-search"
                   type="search"
@@ -79,11 +79,11 @@ export default function Hero({ onSearch, onTagSelect, activeTag }: HeroProps) {
                   onChange={handleSearchChange}
                   placeholder="Search Reddit accounts..."
                   autoComplete="off"
-                  className="w-full bg-transparent border-none text-gray-800 placeholder-gray-400 text-sm sm:text-base focus:outline-none"
+                  className="w-full min-w-0 bg-transparent border-none text-gray-800 placeholder-gray-400 text-xs sm:text-base focus:outline-none"
                 />
                 <button
                   type="submit"
-                  className="px-7 py-2.5 bg-[#FF4500] hover:bg-[#E03D00] text-white font-semibold rounded-full text-sm sm:text-base transition-all shadow-xs shrink-0 cursor-pointer"
+                  className="px-4 sm:px-7 py-2 sm:py-2.5 bg-[#FF4500] hover:bg-[#E03D00] text-white font-semibold rounded-full text-xs sm:text-base transition-all shadow-xs shrink-0 cursor-pointer"
                 >
                   Search
                 </button>
@@ -114,17 +114,15 @@ export default function Hero({ onSearch, onTagSelect, activeTag }: HeroProps) {
             </div>
           </div>
 
-          {/* Right Column — Snoo Card + floating benefit badges */}
-          <div className="lg:col-span-5 flex items-center justify-center lg:justify-end">
-            {/*
-              Badges use max-w + relative positioning within a generous wrapper
-              so they never overflow outside the section on small viewports.
-            */}
-            <div className="relative w-full max-w-[340px] flex items-center justify-center py-10 px-8">
+          {/* Right Column — Snoo Card + benefit badges */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center lg:justify-end">
+            
+            {/* Desktop floating wrapper / Mobile centered card wrapper */}
+            <div className="relative w-full max-w-md lg:max-w-[420px] xl:max-w-[460px] flex items-center justify-center py-4 lg:py-12 px-4 lg:px-8">
 
               {/* Central white card */}
-              <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-orange-100 flex flex-col items-center justify-center w-64 h-64 shrink-0 z-10">
-                <div className="w-28 h-28 mb-3 relative flex items-center justify-center">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-10 shadow-xl border border-orange-100 flex flex-col items-center justify-center w-52 h-52 sm:w-60 sm:h-60 lg:w-64 lg:h-64 shrink-0 z-10">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 mb-3 relative flex items-center justify-center">
                   <svg className="w-full h-full drop-shadow-md" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <circle cx="50" cy="50" r="48" fill="#FF4500" />
                     <path d="M50 32L58 18L68 22" stroke="white" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -140,8 +138,8 @@ export default function Hero({ onSearch, onTagSelect, activeTag }: HeroProps) {
                 <div className="text-2xl font-black tracking-tight text-gray-900">reddit</div>
               </div>
 
-              {/* Floating badge 1 — top right */}
-              <div className="absolute top-0 right-0 z-20 bg-white rounded-2xl p-3.5 px-4 shadow-lg border border-gray-100 flex items-center gap-3 hover:-translate-y-1 transition-transform duration-200">
+              {/* Desktop Only: Floating badge 1 — top right */}
+              <div className="hidden xl:flex absolute top-1 -right-6 xl:-right-10 z-20 bg-white rounded-2xl p-3.5 px-4 shadow-lg border border-gray-100 items-center gap-3 hover:-translate-y-1 transition-transform duration-200">
                 <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
                   <BoltIcon className="!text-[22px]" aria-hidden="true" />
                 </div>
@@ -151,8 +149,8 @@ export default function Hero({ onSearch, onTagSelect, activeTag }: HeroProps) {
                 </div>
               </div>
 
-              {/* Floating badge 2 — middle right */}
-              <div className="absolute top-1/2 -translate-y-1/2 right-0 z-20 bg-white rounded-2xl p-3.5 px-4 shadow-lg border border-gray-100 flex items-center gap-3 hover:-translate-y-1 transition-transform duration-200">
+              {/* Desktop Only: Floating badge 2 — middle left */}
+              <div className="hidden xl:flex absolute top-1/2 -translate-y-1/2 -left-8 xl:-left-12 z-20 bg-white rounded-2xl p-3.5 px-4 shadow-lg border border-gray-100 items-center gap-3 hover:-translate-y-1 transition-transform duration-200">
                 <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
                   <ShieldOutlinedIcon className="!text-[22px]" aria-hidden="true" />
                 </div>
@@ -162,8 +160,8 @@ export default function Hero({ onSearch, onTagSelect, activeTag }: HeroProps) {
                 </div>
               </div>
 
-              {/* Floating badge 3 — bottom right */}
-              <div className="absolute bottom-0 right-0 z-20 bg-white rounded-2xl p-3.5 px-4 shadow-lg border border-gray-100 flex items-center gap-3 hover:-translate-y-1 transition-transform duration-200">
+              {/* Desktop Only: Floating badge 3 — bottom right */}
+              <div className="hidden xl:flex absolute bottom-1 -right-4 xl:-right-8 z-20 bg-white rounded-2xl p-3.5 px-4 shadow-lg border border-gray-100 items-center gap-3 hover:-translate-y-1 transition-transform duration-200">
                 <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
                   <GroupsOutlinedIcon className="!text-[22px]" aria-hidden="true" />
                 </div>
@@ -172,7 +170,39 @@ export default function Hero({ onSearch, onTagSelect, activeTag }: HeroProps) {
                   <div className="text-[11px] text-gray-500">Get your account quickly</div>
                 </div>
               </div>
+            </div>
 
+            {/* Mobile, Tablet & Medium Screens: Clean non-overlapping grid underneath Snoo Card */}
+            <div className="w-full max-w-md sm:max-w-xl xl:hidden mt-5 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 px-1">
+              <div className="bg-white rounded-2xl p-3 sm:p-3.5 px-4 shadow-xs border border-orange-100/90 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
+                  <BoltIcon className="!text-[20px]" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-gray-900 truncate">Verified Listings</div>
+                  <div className="text-[11px] text-gray-500 truncate">High quality accounts</div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-3 sm:p-3.5 px-4 shadow-xs border border-orange-100/90 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
+                  <ShieldOutlinedIcon className="!text-[20px]" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-gray-900 truncate">Secure Payments</div>
+                  <div className="text-[11px] text-gray-500 truncate">Escrow protected</div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl p-3 sm:p-3.5 px-4 shadow-xs border border-orange-100/90 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-[#FF4500] shrink-0">
+                  <GroupsOutlinedIcon className="!text-[20px]" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-gray-900 truncate">Easy &amp; Fast</div>
+                  <div className="text-[11px] text-gray-500 truncate">Get your account quickly</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

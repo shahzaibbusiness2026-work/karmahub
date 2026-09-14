@@ -110,33 +110,36 @@ function CheckoutContent() {
   };
 
   return (
-    <main className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-1 space-y-8">
+    <main className="max-w-[1100px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full flex-1 space-y-6 sm:space-y-8">
       {/* 3-Step Escrow Stepper */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-xs flex items-center justify-between max-w-2xl mx-auto">
-        <div className="flex items-center gap-2 text-green-600">
-          <div className="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center font-bold text-xs">
-            <CheckIcon className="!text-[16px]" />
+      {/* Progress Stepper — horizontal scroll on xs so it never wraps awkwardly */}
+      <div className="bg-white rounded-2xl px-4 py-3 sm:p-5 border border-gray-100 shadow-xs max-w-2xl mx-auto overflow-x-auto">
+        <div className="flex items-center justify-between min-w-[280px] gap-2">
+          <div className="flex items-center gap-1.5 text-green-600 shrink-0">
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-green-100 flex items-center justify-center font-bold text-xs">
+              <CheckIcon className="!text-[14px] sm:!text-[16px]" />
+            </div>
+            <span className="text-[11px] sm:text-sm font-semibold whitespace-nowrap">1. Select</span>
           </div>
-          <span className="text-xs sm:text-sm font-semibold">1. Select Account</span>
-        </div>
-        <div className="w-12 h-0.5 bg-green-200" />
-        <div className="flex items-center gap-2 text-[#FF4500]">
-          <div className="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center font-bold text-xs">
-            2
+          <div className="flex-1 h-0.5 bg-green-200 min-w-[20px]" />
+          <div className="flex items-center gap-1.5 text-[#FF4500] shrink-0">
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-orange-100 flex items-center justify-center font-bold text-xs">
+              2
+            </div>
+            <span className="text-[11px] sm:text-sm font-bold whitespace-nowrap">2. Payment</span>
           </div>
-          <span className="text-xs sm:text-sm font-bold">2. Payment & Escrow</span>
-        </div>
-        <div className="w-12 h-0.5 bg-gray-200" />
-        <div className="flex items-center gap-2 text-gray-400">
-          <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center font-bold text-xs">
-            3
+          <div className="flex-1 h-0.5 bg-gray-200 min-w-[20px]" />
+          <div className="flex items-center gap-1.5 text-gray-400 shrink-0">
+            <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-100 flex items-center justify-center font-bold text-xs">
+              3
+            </div>
+            <span className="text-[11px] sm:text-sm font-medium whitespace-nowrap">3. Vault</span>
           </div>
-          <span className="text-xs sm:text-sm font-medium">3. Credentials Vault</span>
         </div>
       </div>
 
       {/* 2-Column Split: Form (Left 7 cols) & Order Summary (Right 5 cols) */}
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
         {/* Left Column: Delivery Email & Payment Form */}
         <div className="lg:col-span-7 space-y-6">
           {/* Delivery Email Input */}
@@ -322,7 +325,7 @@ function CheckoutContent() {
 
         {/* Right Column: Order Summary (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-lg space-y-5 sticky top-24">
+          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-gray-100 shadow-lg space-y-4 sm:space-y-5 lg:sticky lg:top-24">
             <h3 className="text-base font-bold text-gray-900 border-b border-gray-100 pb-3 flex items-center justify-between">
               <span>Order Summary</span>
               <span className="text-xs font-normal text-gray-400">
@@ -406,17 +409,19 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FBFBFD]">
       {/* Top Navigation */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="text-2xl sm:text-[26px] font-black tracking-tight flex items-center">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+          <Link href="/" className="flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none rounded-xl">
+            <div className="text-xl sm:text-2xl font-black tracking-tight flex items-center">
               <span className="text-gray-950">Acco</span>
               <span className="text-[#FF4500]">Market</span>
             </div>
           </Link>
-          <div className="flex items-center gap-2 text-xs font-semibold text-green-700 bg-green-50 px-3 py-1.5 rounded-full border border-green-200">
-            <LockIcon className="!text-[16px]" />
-            <span>256-Bit Escrow Encrypted Checkout</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-xs font-semibold text-green-700 bg-green-50 px-2.5 sm:px-3 py-1.5 rounded-full border border-green-200">
+            <LockIcon className="!text-[15px] sm:!text-[16px] shrink-0" />
+            <span className="hidden xs:inline sm:inline">256-Bit Escrow</span>
+            <span className="inline sm:hidden">Secure</span>
+            <span className="hidden sm:inline">Encrypted Checkout</span>
           </div>
         </div>
       </header>
