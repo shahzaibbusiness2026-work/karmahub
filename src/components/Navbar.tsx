@@ -38,25 +38,39 @@ export default function Navbar({ onSearch }: NavbarProps) {
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  // Close profile dropdown on outside click
+  const menuContainerRef = useRef<HTMLDivElement>(null);
+
+  // Close profile dropdown and nav menu on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
         setIsProfileMenuOpen(false);
       }
+      if (
+        isMobileMenuOpen &&
+        menuContainerRef.current &&
+        !menuContainerRef.current.contains(event.target as Node)
+      ) {
+        // Only close if click was not on the toggle button
+        const target = event.target as HTMLElement;
+        if (!target.closest("[aria-controls='navbar-menu']")) {
+          setIsMobileMenuOpen(false);
+        }
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsMobileMenuOpen(false);
+        setIsProfileMenuOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  // Close mobile menu on resize to desktop
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) setIsMobileMenuOpen(false);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [isMobileMenuOpen]);
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.04)] select-none">
@@ -236,102 +250,116 @@ export default function Navbar({ onSearch }: NavbarProps) {
             Log In
           </button>
 
-          {/* Get Started (was Sign Up — checkout is wrong destination for signup) */}
-          <Link
-            href="#all-accounts"
-            className="inline-flex items-center justify-center h-10 sm:h-11 px-4 sm:px-5 text-xs sm:text-sm font-bold text-white bg-[#FF4500] hover:bg-[#E03D00] rounded-xl shadow-xs transition-colors whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none"
-          >
-            Browse Now
-          </Link>
-
-          {/* Mobile Menu Toggle */}
+          {/* Hamburger Menu Toggle (replaces Browse Now) */}
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             aria-expanded={isMobileMenuOpen}
-            aria-controls="mobile-menu"
+            aria-controls="navbar-menu"
             aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            className="lg:hidden h-10 w-10 rounded-xl text-gray-700 hover:bg-gray-100 flex items-center justify-center border border-gray-200 focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none cursor-pointer"
+            className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl text-gray-700 hover:text-[#FF4500] hover:bg-orange-50/80 border border-gray-200 hover:border-orange-200 transition-colors flex items-center justify-center cursor-pointer focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none"
           >
-            {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            {isMobileMenuOpen ? (
+              <CloseIcon className="!text-[22px]" />
+            ) : (
+              <MenuIcon className="!text-[22px]" />
+            )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Navigation Menu Drawer */}
       {isMobileMenuOpen && (
         <div
-          id="mobile-menu"
-          className="lg:hidden bg-white border-b border-gray-200/80 px-4 py-4 space-y-3 shadow-lg animate-in slide-in-from-top-2 duration-150"
+          id="navbar-menu"
+          ref={menuContainerRef}
+          className="bg-white border-b border-gray-200/90 px-4 sm:px-6 lg:px-8 py-4 sm:py-5 shadow-xl animate-in slide-in-from-top-2 duration-150"
         >
-          {/* Mobile Search */}
-          <div className="relative">
-            <label htmlFor="mobile-search" className="sr-only">Search accounts</label>
-            <SearchIcon
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 !text-[18px] pointer-events-none"
-              aria-hidden="true"
-            />
-            <input
-              id="mobile-search"
-              type="search"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              placeholder="Search accounts..."
-              autoComplete="off"
-              className="w-full h-11 pl-9 pr-3 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#FF4500] text-gray-900"
-            />
-          </div>
+          <div className="max-w-[1240px] mx-auto space-y-4">
+            {/* Mobile Search (shown only when top search is hidden) */}
+            <div className="relative md:hidden">
+              <label htmlFor="mobile-search" className="sr-only">Search accounts</label>
+              <SearchIcon
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 !text-[18px] pointer-events-none"
+                aria-hidden="true"
+              />
+              <input
+                id="mobile-search"
+                type="search"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                placeholder="Search accounts..."
+                autoComplete="off"
+                className="w-full h-11 pl-9 pr-3 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#FF4500] text-gray-900"
+              />
+            </div>
 
-          {/* Mobile Navigation Links */}
-          <nav className="flex flex-col space-y-1 pt-1 text-sm font-bold text-gray-800" aria-label="Mobile navigation">
-            {NAV_LINKS.map(({ href, label }) => (
+            {/* Menu Links Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2 sm:gap-2.5 text-sm font-bold text-gray-800">
+              {NAV_LINKS.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={closeMobileMenu}
+                  className="px-3.5 py-2.5 rounded-xl hover:bg-orange-50/70 hover:text-[#FF4500] transition-colors flex items-center justify-between border border-transparent hover:border-orange-100"
+                >
+                  <span>{label}</span>
+                  <span className="text-gray-300 text-xs">→</span>
+                </Link>
+              ))}
+
               <Link
-                key={href}
-                href={href}
+                href="/admin"
                 onClick={closeMobileMenu}
-                className="px-3 py-2.5 rounded-xl hover:bg-gray-50 hover:text-[#FF4500] transition-colors"
+                className="px-3.5 py-2.5 rounded-xl bg-orange-50/80 text-[#FF4500] border border-orange-200/80 flex items-center justify-between hover:bg-orange-100/70 transition-colors"
               >
-                {label}
+                <div className="flex items-center gap-2">
+                  <AdminPanelSettingsOutlinedIcon className="!text-[18px]" />
+                  <span>Admin</span>
+                </div>
+                <span className="text-[10px] font-extrabold uppercase bg-[#FF4500] text-white px-1.5 py-0.5 rounded-md">
+                  Panel
+                </span>
               </Link>
-            ))}
-            <Link
-              href="/admin"
-              onClick={closeMobileMenu}
-              className="px-3 py-2.5 rounded-xl bg-orange-50/70 text-[#FF4500] flex items-center justify-between"
-            >
-              <span>Admin Dashboard</span>
-              <span className="text-[10px] font-extrabold uppercase bg-[#FF4500] text-white px-2 py-0.5 rounded-md">
-                Admin
-              </span>
-            </Link>
-            <Link
-              href="/vault"
-              onClick={closeMobileMenu}
-              className="px-3 py-2.5 rounded-xl hover:bg-gray-50 text-gray-700"
-            >
-              Escrow Vault
-            </Link>
-          </nav>
 
-          {/* Mobile Auth Row */}
-          <div className="pt-2 border-t border-gray-100 flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                closeMobileMenu();
-                showToast("Authentication is pre-configured for this demo", "info");
-              }}
-              className="flex-1 h-11 rounded-xl border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-50 cursor-pointer"
-            >
-              Log In
-            </button>
-            <Link
-              href="#all-accounts"
-              onClick={closeMobileMenu}
-              className="flex-1 h-11 rounded-xl bg-[#FF4500] text-white text-xs font-bold flex items-center justify-center shadow-xs hover:bg-[#E03D00] transition-colors"
-            >
-              Browse Now
-            </Link>
+              <Link
+                href="/vault"
+                onClick={closeMobileMenu}
+                className="px-3.5 py-2.5 rounded-xl hover:bg-gray-50 text-gray-700 flex items-center justify-between border border-transparent hover:border-gray-200 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <LockOutlinedIcon className="!text-[18px] text-gray-400" />
+                  <span>Vault</span>
+                </div>
+                <span className="text-[11px] text-gray-400 font-normal">Escrow</span>
+              </Link>
+            </div>
+
+            {/* Bottom Row */}
+            <div className="pt-3 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-xs text-gray-500 text-center sm:text-left">
+                AccoMarket • Verified Reddit Accounts • Automated Instant Delivery
+              </div>
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    closeMobileMenu();
+                    showToast("Authentication is pre-configured for this demo", "info");
+                  }}
+                  className="flex-1 sm:flex-initial h-10 px-4 rounded-xl border border-gray-200 text-xs font-bold text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors"
+                >
+                  Log In
+                </button>
+                <Link
+                  href="/#all-accounts"
+                  onClick={closeMobileMenu}
+                  className="flex-1 sm:flex-initial h-10 px-5 rounded-xl bg-[#FF4500] hover:bg-[#E03D00] text-white text-xs font-bold flex items-center justify-center shadow-xs transition-colors"
+                >
+                  All Accounts
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       )}
