@@ -6,17 +6,16 @@ import Hero from "@/components/Hero";
 import CategoryTabs from "@/components/CategoryTabs";
 import StatsRibbon from "@/components/StatsRibbon";
 import FeaturedAccounts from "@/components/FeaturedAccounts";
+import MarketplaceProtections from "@/components/MarketplaceProtections";
 import TrustRibbon from "@/components/TrustRibbon";
 import Footer from "@/components/Footer";
-import { KARMA_ACCOUNTS } from "@/lib/data";
+import AccountCard from "@/components/AccountCard";
 import { useCart } from "@/context/CartContext";
-import Link from "next/link";
-import SmartToyIcon from "@mui/icons-material/SmartToy";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function HomePage() {
-  const { addToCart, accounts } = useCart();
+  const { accounts } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedPlatform, setSelectedPlatform] = useState("reddit");
@@ -58,7 +57,7 @@ export default function HomePage() {
     else if (sortBy === "age-desc") list.sort((a, b) => b.ageYears - a.ageYears);
 
     return list;
-  }, [searchQuery, selectedTag, sortBy]);
+  }, [accounts, searchQuery, selectedTag, sortBy]);
 
   const handleTagToggle = (tag: string) => {
     if (selectedTag === tag) {
@@ -76,7 +75,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      {/* Navigation Header */}
+      {/* Navigation Header (72px desktop height, flexible search, admin profile dropdown) */}
       <Navbar onSearch={(q) => setSearchQuery(q)} />
 
       {/* Hero Section */}
@@ -86,8 +85,8 @@ export default function HomePage() {
         activeTag={selectedTag}
       />
 
-      {/* Main Container */}
-      <main className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-10 flex-1">
+      {/* Main Container - Centered max-w-[1240px] aligned with listings */}
+      <main className="max-w-[1240px] mx-auto px-4 sm:px-6 py-8 w-full space-y-10 flex-1">
         
         {/* Category Tabs (Row of 6 Platforms) */}
         <CategoryTabs
@@ -98,137 +97,79 @@ export default function HomePage() {
         {/* Platform Statistics Ribbon */}
         <StatsRibbon />
 
-        {/* Featured Reddit Accounts (4 Mockup Cards) */}
+        {/* Compact Marketplace-Wide Protections Strip above listings */}
+        <MarketplaceProtections />
+
+        {/* Featured Reddit Accounts (Refined Cards & Toolbar with 24px gap) */}
         <FeaturedAccounts accounts={accounts} />
 
         {/* Bottom Trust & Security Features Ribbon */}
         <TrustRibbon />
 
-        {/* Dynamic Filterable Catalog */}
+        {/* Dynamic Filterable Complete Inventory */}
         <div id="all-accounts" className="space-y-6 pt-6 border-t border-gray-100">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">All Verified Accounts</h2>
-              <p className="text-xs text-gray-500">
-                Browse complete stock with instant automated escrow handoff.
+              <h2 className="text-xl sm:text-2xl font-black text-gray-950 tracking-tight">
+                All Inventory Accounts
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+                Browse complete verified stock with instant automated escrow handoff.
               </p>
             </div>
 
-            {/* Sorting & Filter Badge */}
+            {/* Sorting & Filter Controls */}
             <div className="flex items-center gap-3">
               {selectedTag && (
                 <button
                   onClick={() => setSelectedTag(null)}
-                  className="text-xs px-2.5 py-1 bg-orange-50 text-[#FF4500] font-medium rounded-full border border-orange-200 cursor-pointer"
+                  className="text-xs px-3 py-1.5 bg-orange-50 text-[#FF4500] font-bold rounded-xl border border-orange-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#FF4500]"
                 >
                   Filter: {selectedTag} ✕
                 </button>
               )}
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:border-[#FF4500] cursor-pointer"
-              >
-                <option value="default">Sort by: Featured</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="karma-desc">Karma: Highest First</option>
-                <option value="age-desc">Age: Oldest First</option>
-              </select>
+              <div className="relative inline-flex items-center">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="appearance-none text-xs font-bold text-gray-800 bg-gray-50 hover:bg-gray-100/80 border border-gray-200 rounded-xl min-h-[44px] h-11 pl-3.5 pr-9 focus:outline-none focus:border-[#FF4500] focus-visible:ring-2 focus-visible:ring-[#FF4500] cursor-pointer transition-colors"
+                >
+                  <option value="default">Sort by: Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="karma-desc">Karma: Highest First</option>
+                  <option value="age-desc">Age: Oldest First</option>
+                </select>
+                <KeyboardArrowDownIcon
+                  className="!text-[18px] text-gray-500 absolute right-2.5 pointer-events-none"
+                  aria-hidden="true"
+                />
+              </div>
             </div>
           </div>
 
-          {/* Cards Grid */}
+          {/* Cards Grid: 1 col (mobile), 2 cols (tablet), 3 cols (desktop) with 24px gap */}
           {filteredAccounts.length === 0 ? (
-            <div className="col-span-full py-12 text-center text-gray-500 bg-white rounded-2xl border border-gray-100">
-              <SearchOffIcon className="!text-[48px] text-gray-300 mb-2" />
-              <p className="font-semibold text-gray-700">No matching accounts found</p>
-              <p className="text-xs mt-1">Try clearing your search query or selecting another tag.</p>
+            <div className="col-span-full py-16 text-center text-gray-500 bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
+              <SearchOffIcon className="!text-[48px] text-gray-300 mb-2" aria-hidden="true" />
+              <h3 className="font-bold text-gray-900 text-base">No matching accounts found</h3>
+              <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
+                No accounts matched your search criteria. Try clearing your search query or selecting another tag.
+              </p>
               <button
                 onClick={() => {
                   setSearchQuery("");
                   setSelectedTag(null);
                 }}
-                className="mt-4 px-4 py-2 bg-[#FF4500] text-white rounded-lg text-xs font-semibold cursor-pointer"
+                className="mt-4 min-h-[44px] px-5 py-2.5 bg-[#FF4500] hover:bg-[#E03D00] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-[#FF4500]"
               >
                 Reset Filters
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredAccounts.map((acc) => (
-                <div
-                  key={acc.id}
-                  className="bg-white rounded-2xl p-5 border border-gray-100 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-orange-100 text-[#FF4500] flex items-center justify-center font-bold text-xs">
-                          <SmartToyIcon className="!text-[18px]" />
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-gray-900">{acc.title}</h4>
-                          <p className="text-[11px] text-gray-400 font-mono">{acc.id}</p>
-                        </div>
-                      </div>
-                      <span
-                        className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
-                          acc.badgeType === "best-value"
-                            ? "text-blue-700 bg-blue-50 border-blue-200"
-                            : "text-green-700 bg-green-50 border-green-200"
-                        }`}
-                      >
-                        {acc.badge}
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-gray-500 leading-relaxed">{acc.subtitle}</p>
-
-                    <div className="grid grid-cols-2 gap-2 bg-gray-50/70 p-2.5 rounded-xl text-xs">
-                      <div>
-                        <span className="text-gray-400 block text-[10px]">Age</span>
-                        <span className="font-bold text-gray-800">{acc.ageDisplay}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-400 block text-[10px]">Total Karma</span>
-                        <span className="font-bold text-gray-800">{acc.totalKarmaDisplay}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-400 block text-[10px]">Posts</span>
-                        <span className="font-bold text-gray-800">{acc.postsCount}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-400 block text-[10px]">Comments</span>
-                        <span className="font-bold text-gray-800">{acc.commentsCount}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 mt-3 border-t border-gray-100 flex items-center justify-between gap-2">
-                    <div>
-                      <span className="text-xs text-gray-400 block">Instant Escrow</span>
-                      <span className="text-xl font-black text-gray-900">
-                        ${acc.price.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        onClick={() => addToCart(acc.id)}
-                        className="p-2 text-gray-600 hover:text-[#FF4500] hover:bg-orange-50 rounded-lg border border-gray-200 transition-colors cursor-pointer"
-                        title="Add to Basket"
-                      >
-                        <AddShoppingCartIcon className="!text-[18px]" />
-                      </button>
-                      <Link
-                        href={`/listing?id=${acc.id}`}
-                        className="px-3.5 py-2 bg-[#FF4500] hover:bg-[#E03D00] text-white text-xs font-semibold rounded-lg transition-colors"
-                      >
-                        View Details
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                <AccountCard key={acc.id} account={acc} />
               ))}
             </div>
           )}
