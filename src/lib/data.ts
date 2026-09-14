@@ -292,6 +292,144 @@ export const KARMA_ACCOUNTS: Account[] = [
     vaultUsername: "u/Football_node",
     vaultEmail: "vault-transfer-712@accomarket.net",
     vaultToken: "tk_live_7122_3310_m44p"
+  },
+  {
+    id: "RDT-M01",
+    title: "Fresh 1-Month Clean Starter",
+    subtitle: "1 Month • Clean History & Transferable OG Mail",
+    subreddit: "u/AskReddit",
+    registrationDate: "14 Aug 2026",
+    sku: "RDT-1MO-FRESH-2K",
+    ageYears: 0.08,
+    ageDisplay: "1 month",
+    price: 29.00,
+    stock: 12,
+    tier: "Fresh Starter",
+    types: ["fresh", "starter", "low-price"],
+    postKarma: 850,
+    commentKarma: 1420,
+    totalKarma: 2270,
+    totalKarmaDisplay: "2,270",
+    postsCount: 35,
+    commentsCount: 160,
+    badge: "Verified",
+    badgeType: "verified",
+    bannerTheme: "mountains",
+    description: "Clean 1-month old profile with organic introductory karma. Perfect for personal or business posting.",
+    emailStatus: "Transferable (Fresh OG Mail)",
+    shadowbanAudit: "100% (0 Strikes)",
+    tags: ["1+ Month", "Verified Email", "Active", "Low Price"],
+    communities: [
+      { name: "r/AskReddit", karma: 1200, percent: "52.8%", color: "bg-[#FF4500]" },
+      { name: "r/aww", karma: 650, percent: "28.6%", color: "bg-[#FF6B35]" },
+      { name: "r/pics", karma: 420, percent: "18.6%", color: "bg-[#FFA07A]" }
+    ],
+    badges: [
+      { title: "Verified Email", date: "Validated 2026", icon: "verified_user", color: "text-green-600" },
+      { title: "Clean Ledger", date: "No Infractions", icon: "shield", color: "text-blue-600" }
+    ],
+    trajectory: [
+      { year: "W1", height: "30%", val: "400" },
+      { year: "W2", height: "60%", val: "1.1k" },
+      { year: "W4", height: "100%", val: "2.2k" }
+    ],
+    hash: "#0xDD11...55A1",
+    vaultPasskey: "M1#pL$44kR_Fresh!",
+    vaultUsername: "u/AskReddit_newbie",
+    vaultEmail: "vault-transfer-m01@accomarket.net",
+    vaultToken: "tk_live_1011_4401_f22b"
+  },
+  {
+    id: "RDT-M03",
+    title: "Active 3-Month Discussion Account",
+    subtitle: "3 Months • Steady Comment Karma & Clean Standing",
+    subreddit: "u/Technology",
+    registrationDate: "14 Jun 2026",
+    sku: "RDT-3MO-ACT-5K",
+    ageYears: 0.25,
+    ageDisplay: "3 months",
+    price: 45.00,
+    stock: 6,
+    tier: "Organic Contributor",
+    types: ["active", "balanced", "low-price"],
+    postKarma: 1650,
+    commentKarma: 3840,
+    totalKarma: 5490,
+    totalKarmaDisplay: "5,490",
+    postsCount: 65,
+    commentsCount: 480,
+    badge: "Verified",
+    badgeType: "verified",
+    bannerTheme: "cosmic",
+    description: "Consistent 3-month account with solid comment karma and natural community participation.",
+    emailStatus: "Transferable (Clean OG Mail)",
+    shadowbanAudit: "100% (0 Strikes)",
+    tags: ["3+ Months", "Verified Email", "Active", "Low Price"],
+    communities: [
+      { name: "r/technology", karma: 2600, percent: "47.3%", color: "bg-[#FF4500]" },
+      { name: "r/gaming", karma: 1800, percent: "32.8%", color: "bg-[#FF6B35]" },
+      { name: "r/news", karma: 1090, percent: "19.9%", color: "bg-[#FFA07A]" }
+    ],
+    badges: [
+      { title: "Verified Email", date: "Validated 2026", icon: "verified_user", color: "text-green-600" },
+      { title: "Active Contributor", date: "Verified Community", icon: "grade", color: "text-amber-500" }
+    ],
+    trajectory: [
+      { year: "M1", height: "35%", val: "1.4k" },
+      { year: "M2", height: "70%", val: "3.2k" },
+      { year: "M3", height: "100%", val: "5.4k" }
+    ],
+    hash: "#0xEE22...66B2",
+    vaultPasskey: "T3#mK$88vP_Prime!",
+    vaultUsername: "u/Tech_spark3",
+    vaultEmail: "vault-transfer-m03@accomarket.net",
+    vaultToken: "tk_live_3031_8802_p33c"
+  },
+  {
+    id: "RDT-M06",
+    title: "Established 6-Month Organic Account",
+    subtitle: "6 Months • 10K+ Karma & Balanced Distribution",
+    subreddit: "u/Gaming",
+    registrationDate: "14 Mar 2026",
+    sku: "RDT-6MO-EST-11K",
+    ageYears: 0.5,
+    ageDisplay: "6 months",
+    price: 59.00,
+    stock: 4,
+    tier: "Best Value Organic",
+    types: ["active", "balanced", "verified"],
+    postKarma: 3400,
+    commentKarma: 7800,
+    totalKarma: 11200,
+    totalKarmaDisplay: "11,200",
+    postsCount: 140,
+    commentsCount: 920,
+    badge: "Best Value",
+    badgeType: "best-value",
+    bannerTheme: "synthwave",
+    description: "Solid 6-month account with over 10K total karma and balanced post and comment history.",
+    emailStatus: "Transferable (Clean OG Mail)",
+    shadowbanAudit: "100% (0 Strikes)",
+    tags: ["6+ Months", "10K+ Karma", "Verified Email", "Active"],
+    communities: [
+      { name: "r/gaming", karma: 4800, percent: "42.8%", color: "bg-[#FF4500]" },
+      { name: "r/AskReddit", karma: 3600, percent: "32.1%", color: "bg-[#FF6B35]" },
+      { name: "r/memes", karma: 2800, percent: "25.1%", color: "bg-[#FFA07A]" }
+    ],
+    badges: [
+      { title: "Verified Email", date: "Validated 2026", icon: "verified_user", color: "text-green-600" },
+      { title: "Top Contributor", date: "Verified Community", icon: "grade", color: "text-amber-500" }
+    ],
+    trajectory: [
+      { year: "M1", height: "20%", val: "2.1k" },
+      { year: "M3", height: "55%", val: "6.2k" },
+      { year: "M6", height: "100%", val: "11.2k" }
+    ],
+    hash: "#0xFF33...77C3",
+    vaultPasskey: "S6#xR$99wQ_Vault!",
+    vaultUsername: "u/Gaming_sage6",
+    vaultEmail: "vault-transfer-m06@accomarket.net",
+    vaultToken: "tk_live_6061_9903_s66d"
   }
 ];
 

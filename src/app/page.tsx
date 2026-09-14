@@ -23,14 +23,24 @@ function isPlatformActive(id: string): id is ActivePlatform {
   return ACTIVE_PLATFORM_IDS.includes(id as ActivePlatform);
 }
 
-type SortKey = "default" | "price-asc" | "price-desc" | "karma-desc" | "age-desc";
+import InventoryFilters, {
+  FilterState,
+  AGE_OPTIONS,
+} from "@/components/InventoryFilters";
 
 export default function HomePage() {
   const { accounts } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedPlatform, setSelectedPlatform] = useState("reddit");
-  const [sortBy, setSortBy] = useState<SortKey>("default");
+
+  const [filterState, setFilterState] = useState<FilterState>({
+    age: "all",
+    postKarma: "all",
+    commentKarma: "all",
+    totalKarma: "all",
+    sortBy: "default",
+    tag: null,
+  });
 
   const filteredAccounts = useMemo(() => {
     let list = [...accounts];
@@ -43,14 +53,42 @@ export default function HomePage() {
           acc.title.toLowerCase().includes(q) ||
           acc.subtitle.toLowerCase().includes(q) ||
           acc.id.toLowerCase().includes(q) ||
+          (acc.subreddit && acc.subreddit.toLowerCase().includes(q)) ||
+          (acc.description && acc.description.toLowerCase().includes(q)) ||
           acc.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
 
+    // Filter by Account Age (1m, 3m, 6m, 1y, 2y, 3y, 5y)
+    if (filterState.age !== "all") {
+      const option = AGE_OPTIONS.find((a) => a.id === filterState.age);
+      if (option) {
+        list = list.filter((acc) => acc.ageYears >= option.minYears);
+      }
+    }
+
+    // Filter by Post Karma
+    if (filterState.postKarma !== "all") {
+      const minPostKarma = Number(filterState.postKarma) || 0;
+      list = list.filter((acc) => acc.postKarma >= minPostKarma);
+    }
+
+    // Filter by Comment Karma
+    if (filterState.commentKarma !== "all") {
+      const minCommentKarma = Number(filterState.commentKarma) || 0;
+      list = list.filter((acc) => acc.commentKarma >= minCommentKarma);
+    }
+
+    // Filter by Total Karma
+    if (filterState.totalKarma !== "all") {
+      const minTotalKarma = Number(filterState.totalKarma) || 0;
+      list = list.filter((acc) => acc.totalKarma >= minTotalKarma);
+    }
+
     // Filter by quick-filter tag
-    if (selectedTag) {
+    if (filterState.tag) {
       list = list.filter((acc) => {
-        switch (selectedTag) {
+        switch (filterState.tag) {
           case "1+ Year":
             return acc.ageYears >= 1.0;
           case "10K+ Karma":
@@ -70,8 +108,8 @@ export default function HomePage() {
       });
     }
 
-    // Sort
-    switch (sortBy) {
+    // Sort accounts
+    switch (filterState.sortBy) {
       case "price-asc":
         list.sort((a, b) => a.price - b.price);
         break;
@@ -81,16 +119,31 @@ export default function HomePage() {
       case "karma-desc":
         list.sort((a, b) => b.totalKarma - a.totalKarma);
         break;
+      case "post-karma-desc":
+        list.sort((a, b) => b.postKarma - a.postKarma);
+        break;
+      case "comment-karma-desc":
+        list.sort((a, b) => b.commentKarma - a.commentKarma);
+        break;
       case "age-desc":
         list.sort((a, b) => b.ageYears - a.ageYears);
+        break;
+      case "age-asc":
+        list.sort((a, b) => a.ageYears - b.ageYears);
+        break;
+      default:
+        // default order
         break;
     }
 
     return list;
-  }, [accounts, searchQuery, selectedTag, sortBy]);
+  }, [accounts, searchQuery, filterState]);
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTag((prev) => (prev === tag ? null : tag));
+    setFilterState((prev) => ({
+      ...prev,
+      tag: prev.tag === tag ? null : tag,
+    }));
     document.getElementById("all-accounts")?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -116,7 +169,7 @@ export default function HomePage() {
       <Hero
         onSearch={handleHeroSearch}
         onTagSelect={handleTagToggle}
-        activeTag={selectedTag}
+        activeTag={filterState.tag}
       />
 
       <main className="max-w-[1240px] mx-auto px-4 sm:px-6 py-8 w-full space-y-10 flex-1">
@@ -144,52 +197,28 @@ export default function HomePage() {
 
         {/* Full Filterable Inventory */}
         <section id="all-accounts" className="space-y-6 pt-6 border-t border-gray-100" aria-labelledby="all-accounts-heading">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <h2 id="all-accounts-heading" className="text-xl sm:text-2xl font-black text-gray-950 tracking-tight">
-                {showComingSoon
-                  ? `${selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)} Accounts`
-                  : "All Inventory Accounts"}
-              </h2>
-              <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
-                {showComingSoon
-                  ? "This platform catalog is coming soon — sign up to get notified."
-                  : "Browse complete verified stock with instant automated escrow handoff."}
-              </p>
-            </div>
-
-            {/* Sort & Filter Controls — hidden when showing coming-soon state */}
-            {!showComingSoon && (
-              <div className="flex items-center gap-3">
-                {selectedTag && (
-                  <button
-                    onClick={() => setSelectedTag(null)}
-                    className="text-xs px-3 py-1.5 bg-orange-50 text-[#FF4500] font-bold rounded-xl border border-orange-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[#FF4500]"
-                  >
-                    Filter: {selectedTag} ✕
-                  </button>
-                )}
-                <div className="relative inline-flex items-center">
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as SortKey)}
-                    aria-label="Sort accounts"
-                    className="appearance-none text-xs font-bold text-gray-800 bg-gray-50 hover:bg-gray-100/80 border border-gray-200 rounded-xl min-h-[44px] h-11 pl-3.5 pr-9 focus:outline-none focus:border-[#FF4500] focus-visible:ring-2 focus-visible:ring-[#FF4500] cursor-pointer transition-colors"
-                  >
-                    <option value="default">Sort by: Featured</option>
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="karma-desc">Karma: Highest First</option>
-                    <option value="age-desc">Age: Oldest First</option>
-                  </select>
-                  <KeyboardArrowDownIcon
-                    className="!text-[18px] text-gray-500 absolute right-2.5 pointer-events-none"
-                    aria-hidden="true"
-                  />
-                </div>
-              </div>
-            )}
+          <div>
+            <h2 id="all-accounts-heading" className="text-xl sm:text-2xl font-black text-gray-950 tracking-tight">
+              {showComingSoon
+                ? `${selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)} Accounts`
+                : "All Inventory Accounts"}
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
+              {showComingSoon
+                ? "This platform catalog is coming soon — sign up to get notified."
+                : "Browse complete verified stock with instant automated escrow handoff."}
+            </p>
           </div>
+
+          {/* Comprehensive Inventory Filters (Age, Post Karma, Comment Karma, Sort) */}
+          {!showComingSoon && (
+            <InventoryFilters
+              filters={filterState}
+              onFilterChange={setFilterState}
+              totalResults={filteredAccounts.length}
+              totalInventoryCount={accounts.length}
+            />
+          )}
 
           {/* Coming Soon State */}
           {showComingSoon ? (
@@ -205,7 +234,14 @@ export default function HomePage() {
                 onClick={() => {
                   setSelectedPlatform("reddit");
                   setSearchQuery("");
-                  setSelectedTag(null);
+                  setFilterState({
+                    age: "all",
+                    postKarma: "all",
+                    commentKarma: "all",
+                    totalKarma: "all",
+                    sortBy: "default",
+                    tag: null,
+                  });
                 }}
                 className="mt-6 min-h-[44px] px-6 py-2.5 bg-[#FF4500] hover:bg-[#E03D00] text-white rounded-xl text-sm font-bold transition-colors cursor-pointer shadow-xs"
               >
@@ -218,12 +254,19 @@ export default function HomePage() {
               <SearchOffIcon className="!text-[48px] text-gray-300 mb-2" aria-hidden="true" />
               <h3 className="font-bold text-gray-900 text-base">No matching accounts found</h3>
               <p className="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
-                Try clearing your search or selecting a different filter tag.
+                Try clearing your search or resetting the filters.
               </p>
               <button
                 onClick={() => {
                   setSearchQuery("");
-                  setSelectedTag(null);
+                  setFilterState({
+                    age: "all",
+                    postKarma: "all",
+                    commentKarma: "all",
+                    totalKarma: "all",
+                    sortBy: "default",
+                    tag: null,
+                  });
                 }}
                 className="mt-4 min-h-[44px] px-5 py-2.5 bg-[#FF4500] hover:bg-[#E03D00] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs focus-visible:ring-2 focus-visible:ring-[#FF4500]"
               >

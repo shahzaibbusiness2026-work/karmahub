@@ -158,7 +158,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           ? { ...fresh, ...persisted, bannerTheme: fresh.bannerTheme, subreddit: fresh.subreddit, description: fresh.description, badgeType: fresh.badgeType }
           : persisted;
       });
-      setAccounts(merged);
+      const newItems = KARMA_ACCOUNTS.filter((k) => !storedInventory.some((p) => p.id === k.id));
+      setAccounts([...merged, ...newItems]);
     }
 
     const storedOrders = readStorage<OrderData[]>("accomarket_all_orders");

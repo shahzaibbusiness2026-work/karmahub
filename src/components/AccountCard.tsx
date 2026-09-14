@@ -45,9 +45,9 @@ export default function AccountCard({ account, isListView = false }: AccountCard
   const isPremium = account.badgeType === "premium";
   const isVerified = account.badgeType === "verified";
 
-  // Safely display age — guard against 0 being falsy
+  // Safely display age — prioritize human-readable ageDisplay (e.g. "1 month", "3 months")
   const ageDisplayStr =
-    account.ageYears != null ? `${account.ageYears} yrs` : account.ageDisplay;
+    account.ageDisplay ?? (account.ageYears != null ? `${account.ageYears} yrs` : "N/A");
 
   const karmaDisplayStr =
     account.totalKarmaDisplay ?? account.totalKarma.toLocaleString();
@@ -222,6 +222,19 @@ export default function AccountCard({ account, isListView = false }: AccountCard
                 <div className="text-[13px] sm:text-sm font-bold text-gray-900 truncate">{value}</div>
               </div>
             ))}
+          </div>
+
+          {/* Post & Comment Karma breakdown pill */}
+          <div className="flex items-center justify-between text-[11px] font-medium text-gray-500 bg-orange-50/50 rounded-lg px-2.5 py-1.5 border border-orange-100/70">
+            <span className="flex items-center gap-1.5 truncate">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF4500] shrink-0" aria-hidden="true" />
+              <span><strong className="text-gray-900 font-bold">{account.postKarma.toLocaleString()}</strong> Post Karma</span>
+            </span>
+            <span className="text-gray-300 mx-1 shrink-0">•</span>
+            <span className="flex items-center gap-1.5 truncate">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" aria-hidden="true" />
+              <span><strong className="text-gray-900 font-bold">{account.commentKarma.toLocaleString()}</strong> Comment Karma</span>
+            </span>
           </div>
 
           {/* Description */}
