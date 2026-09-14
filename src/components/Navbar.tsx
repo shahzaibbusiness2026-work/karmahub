@@ -250,14 +250,22 @@ export default function Navbar({ onSearch }: NavbarProps) {
             Log In
           </button>
 
-          {/* Hamburger Menu Toggle (replaces Browse Now) */}
+          {/* Desktop Only: Browse Now CTA */}
+          <Link
+            href="/#all-accounts"
+            className="hidden lg:inline-flex items-center justify-center h-10 sm:h-11 px-4 sm:px-5 text-xs sm:text-sm font-bold text-white bg-[#FF4500] hover:bg-[#E03D00] rounded-xl shadow-xs transition-colors whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none"
+          >
+            Browse Now
+          </Link>
+
+          {/* Mobile Only: Hamburger Menu Toggle */}
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             aria-expanded={isMobileMenuOpen}
             aria-controls="navbar-menu"
             aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl text-gray-700 hover:text-[#FF4500] hover:bg-orange-50/80 border border-gray-200 hover:border-orange-200 transition-colors flex items-center justify-center cursor-pointer focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none"
+            className="lg:hidden h-10 w-10 sm:h-11 sm:w-11 rounded-xl text-gray-700 hover:text-[#FF4500] hover:bg-orange-50/80 border border-gray-200 hover:border-orange-200 transition-colors flex items-center justify-center cursor-pointer focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none"
           >
             {isMobileMenuOpen ? (
               <CloseIcon className="!text-[22px]" />
@@ -268,12 +276,12 @@ export default function Navbar({ onSearch }: NavbarProps) {
         </div>
       </div>
 
-      {/* Navigation Menu Drawer */}
+      {/* Mobile Only: Navigation Menu Drawer */}
       {isMobileMenuOpen && (
         <div
           id="navbar-menu"
           ref={menuContainerRef}
-          className="bg-white border-b border-gray-200/90 px-4 sm:px-6 lg:px-8 py-4 sm:py-5 shadow-xl animate-in slide-in-from-top-2 duration-150"
+          className="lg:hidden bg-white border-b border-gray-200/90 px-4 sm:px-6 py-4 sm:py-5 shadow-xl animate-in slide-in-from-top-2 duration-150"
         >
           <div className="max-w-[1240px] mx-auto space-y-3.5">
             {/* Mobile Admin Profile Banner (accessible inside hamburger menu) */}
