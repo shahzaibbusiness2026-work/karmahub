@@ -10,6 +10,8 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import ChatBubbleOutlineRoundedIcon from "@mui/icons-material/ChatBubbleOutlineRounded";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
+import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
+import ViewListRoundedIcon from "@mui/icons-material/ViewListRounded";
 
 export type AgeFilterValue = "all" | "1m" | "3m" | "6m" | "1y" | "2y" | "3y" | "5y";
 export type PostKarmaFilterValue = "all" | "500" | "1000" | "2500" | "5000" | "10000" | "20000";
@@ -39,6 +41,8 @@ interface InventoryFiltersProps {
   onFilterChange: (filters: FilterState) => void;
   totalResults: number;
   totalInventoryCount: number;
+  viewMode?: "grid" | "list";
+  onViewModeChange?: (mode: "grid" | "list") => void;
 }
 
 export const AGE_OPTIONS: { id: AgeFilterValue; label: string; shortLabel: string; minYears: number }[] = [
@@ -96,6 +100,8 @@ export default function InventoryFilters({
   onFilterChange,
   totalResults,
   totalInventoryCount,
+  viewMode = "grid",
+  onViewModeChange,
 }: InventoryFiltersProps) {
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
@@ -203,6 +209,44 @@ export default function InventoryFilters({
               aria-hidden="true"
             />
           </div>
+
+          {/* Optional View Mode Toggle (Grid / List) */}
+          {onViewModeChange && (
+            <div
+              role="group"
+              aria-label="View layout options"
+              className="hidden sm:flex items-center bg-gray-100 p-1 rounded-xl gap-1"
+            >
+              <button
+                type="button"
+                onClick={() => onViewModeChange("grid")}
+                aria-label="Grid layout view"
+                aria-pressed={viewMode === "grid"}
+                title="Grid View"
+                className={`min-h-[40px] min-w-[40px] w-10 h-10 rounded-lg flex items-center justify-center transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none ${
+                  viewMode === "grid"
+                    ? "bg-[#FF4500] text-white shadow-xs"
+                    : "text-gray-500 hover:text-gray-900 bg-transparent"
+                }`}
+              >
+                <GridViewRoundedIcon className="!text-[18px]" />
+              </button>
+              <button
+                type="button"
+                onClick={() => onViewModeChange("list")}
+                aria-label="List layout view"
+                aria-pressed={viewMode === "list"}
+                title="List View"
+                className={`min-h-[40px] min-w-[40px] w-10 h-10 rounded-lg flex items-center justify-center transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none ${
+                  viewMode === "list"
+                    ? "bg-[#FF4500] text-white shadow-xs"
+                    : "text-gray-500 hover:text-gray-900 bg-transparent"
+                }`}
+              >
+                <ViewListRoundedIcon className="!text-[18px]" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
