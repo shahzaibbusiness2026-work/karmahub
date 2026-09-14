@@ -154,8 +154,8 @@ export default function Navbar({ onSearch }: NavbarProps) {
             )}
           </button>
 
-          {/* Admin Profile Dropdown */}
-          <div className="relative" ref={profileMenuRef}>
+          {/* Admin Profile Dropdown (hidden on mobile/tablet because it is inside the hamburger menu) */}
+          <div className="relative hidden lg:block" ref={profileMenuRef}>
             <button
               type="button"
               onClick={() => setIsProfileMenuOpen((prev) => !prev)}
@@ -241,11 +241,11 @@ export default function Navbar({ onSearch }: NavbarProps) {
             )}
           </div>
 
-          {/* Log In */}
+          {/* Log In (hidden on mobile/tablet because it is inside the hamburger menu) */}
           <button
             type="button"
             onClick={() => showToast("Authentication is pre-configured for this demo", "info")}
-            className="hidden sm:inline-flex items-center justify-center h-10 sm:h-11 px-4 text-xs sm:text-sm font-bold text-gray-700 hover:text-gray-950 rounded-xl hover:bg-gray-50 border border-gray-200 transition-colors cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none"
+            className="hidden lg:inline-flex items-center justify-center h-10 sm:h-11 px-4 text-xs sm:text-sm font-bold text-gray-700 hover:text-gray-950 rounded-xl hover:bg-gray-50 border border-gray-200 transition-colors cursor-pointer whitespace-nowrap focus-visible:ring-2 focus-visible:ring-[#FF4500] focus-visible:outline-none"
           >
             Log In
           </button>
@@ -275,7 +275,32 @@ export default function Navbar({ onSearch }: NavbarProps) {
           ref={menuContainerRef}
           className="bg-white border-b border-gray-200/90 px-4 sm:px-6 lg:px-8 py-4 sm:py-5 shadow-xl animate-in slide-in-from-top-2 duration-150"
         >
-          <div className="max-w-[1240px] mx-auto space-y-4">
+          <div className="max-w-[1240px] mx-auto space-y-3.5">
+            {/* Mobile Admin Profile Banner (accessible inside hamburger menu) */}
+            <div className="lg:hidden p-3 rounded-2xl bg-orange-50/70 border border-orange-100 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-gray-900 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                  AD
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
+                    <span>Administrator</span>
+                    <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-orange-100 text-[#FF4500]">
+                      SuperAdmin
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-gray-500 truncate">admin@accomarket.net</div>
+                </div>
+              </div>
+              <Link
+                href="/admin"
+                onClick={closeMobileMenu}
+                className="shrink-0 text-xs font-bold text-[#FF4500] hover:underline"
+              >
+                Panel →
+              </Link>
+            </div>
+
             {/* Mobile Search (shown only when top search is hidden) */}
             <div className="relative md:hidden">
               <label htmlFor="mobile-search" className="sr-only">Search accounts</label>
